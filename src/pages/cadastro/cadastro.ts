@@ -1,13 +1,24 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+// importou o tipo Carro para tiparmos a propriedade carro que guarda um objeto do tipo Carro
+import { Carro } from '../../domain/carro/carro';
 
 @Component({
+  selector: 'page-cadastro',
   templateUrl: 'cadastro.html'
 })
 export class CadastroPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+  public carro: Carro;
+  public precoTotal: number;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+    this.carro = navParams.get('carro');
+    this.precoTotal = navParams.get('precoTotal');
+
+  }
 
   /**
    * o IonViewDidLoad carrega ao iniciar o componente e 
@@ -20,5 +31,9 @@ export class CadastroPage {
      console.log('ionViewDidLoad CadastroPage');
    }
     */
+
+
+
+
 
 }
