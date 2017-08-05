@@ -9,6 +9,16 @@ import { AgendamentoService } from '../domain/agendamento/agendamento-service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
+import { Storage } from '@ionic/storage';
+
+function provideStorage() {
+  return new Storage(['indexeddb'], { 
+    name: 'agendaDB',
+    storeName: 'agendamentos'
+  });
+}
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -26,6 +36,8 @@ import 'rxjs/add/operator/toPromise';
     EscolhaPage,
     CadastroPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AgendamentoService]
+  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, 
+              AgendamentoService, 
+              { provide: Storage, useFactory: provideStorage }]
 })
 export class AppModule {}

@@ -17,45 +17,42 @@ export class CadastroPage {
 
   public agendamento: Agendamento;
   private _alerta: Alert;
-  
 
-  constructor(public navCtrl: NavController, 
-              public navParams: NavParams,
-              private _http: Http,
-              private _service: AgendamentoService,
-              private _alertCtrl: AlertController) {
-    this.agendamento = new Agendamento();            
+
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private _http: Http,
+    private _service: AgendamentoService,
+    private _alertCtrl: AlertController) {
+    this.agendamento = new Agendamento();
     this.agendamento.carro = navParams.get('carro');
     this.agendamento.valor = navParams.get('precoTotal');
     this._alerta = this._alertCtrl.create({
-        title:'Aviso',
-      buttons: [{ text: 'OK' , handler: () => this.navCtrl.setRoot(HomePage)}]
+      title: 'Aviso',
+      buttons: [{ text: 'OK', handler: () => this.navCtrl.setRoot(HomePage) }]
     });
-    
+
 
   }
 
-  agenda(){
+  agenda() {
 
-    if(!this.agendamento.nome || !this.agendamento.endereco || !this.agendamento.email || !this.agendamento.data ){
-        this._alertCtrl.create({
-          title: 'Preenchimento Obrigatório',
-          subTitle: 'Você deve preencher todas as informações',
-          buttons: [{text: 'Fechar'}]
-        }).present();
-        return;
+    if (!this.agendamento.nome || !this.agendamento.endereco || !this.agendamento.email || !this.agendamento.data) {
+      this._alertCtrl.create({
+        title: 'Preenchimento Obrigatório',
+        subTitle: 'Você deve preencher todas as informações',
+        buttons: [{ text: 'Fechar' }]
+      }).present();
+      return;
     }
 
 
-            this._service.agenda(this.agendamento)  
-            .then(() => {
-              this._alerta.setSubTitle('Agendamento realizado com sucesso!')
-              this._alerta.present();
-            })
-            .catch(erro => {
-              this._alerta.setSubTitle('Não foi possível realizar o agendamento do veículo. Tente mais tarde!');
-              this._alerta.present();
-            });
+    this._service.agenda(this.agendamento)
+      .then(confirmado => {
+        confirmado ? this._alerta.setSubTitle('Agendamento realizado com sucesso!') : this._alerta.setSubTitle('Não foi possível realizar o agendamento do veículo. Tente mais tarde!');
+        this._alerta.present();
+      })
+
   }
 
 
