@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Alert } from 'ionic-angular';
 import { Http } from '@angular/http';
+import { HomePage } from '../home/home';
+import { Agendamento } from '../../domain/agendamento/agendamento';
 
 // importou o tipo Carro para tiparmos a propriedade carro que guarda um objeto do tipo Carro
 import { Carro } from '../../domain/carro/carro';
@@ -11,33 +13,40 @@ import { Carro } from '../../domain/carro/carro';
 })
 export class CadastroPage {
 
-  public carro: Carro;
-  public precoTotal: number;
-
-  public nome: string;
-  public endereco: string;
-  public email: string;
-  public data: string = new Date().toISOString();
+  public agendamento: Agendamento;
+  private _alerta: Alert;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
-              private _http: Http) {
-
-    this.carro = navParams.get('carro');
-    this.precoTotal = navParams.get('precoTotal');
+              private _http: Http,
+              private _alertCtrl: AlertController) {
+    this.agendamento = new Agendamento();            
+    this.agendamento.carro = navParams.get('carro');
+    this.agendamento.valor = navParams.get('precoTotal');
+    this._alerta = this._alertCtrl.create({
+        title:'Aviso',
+      buttons: [{ text: 'OK' , handler: () => this.navCtrl.setRoot(HomePage)}]
+    });
+    
 
   }
 
   agenda(){
 
     //Metodo de gravacao da api do cliente é GET deveria ser post , o fornecedor já está arrumando para ser post na proxima versao.
-    
 
-    let api = `https://aluracar.herokuapp.com/salvarpedido?carro=${this.carro.nome}&nome=${this.nome}&preco=${this.precoTotal}&endereco=${this.endereco}&email=${this.email}&dataAgendamento=${this.data}`;
+
+    let api = `https://aluracar.herokuapp.com/salvarpedido?carro=${this.agendamento.carro.nome}&nome=${this.agendamento.nome}&preco=${this.agendamento.valor}&endereco=${this.agendamento.endereco}&email=${this.agendamento.email}&dataAgendamento=${this.agendamento.data}`;
      this._http.get(api)
             .toPromise()
-            .then(() => alert('Sucesso'))
-            .catch(erro => alert('Falha'));
+            .then(() => {
+              this._alerta.setSubTitle('Agendamento realizado com sucesso!')
+              this._alerta.present();
+            })
+            .catch(erro => {
+              this._alerta.setSubTitle('Não foi possível realizar o agendamento do veículo. Tente mais tarde!');
+              this._alerta.present();
+            });
   }
 
 
