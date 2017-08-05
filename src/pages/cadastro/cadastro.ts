@@ -35,6 +35,15 @@ export class CadastroPage {
 
     //Metodo de gravacao da api do cliente é GET deveria ser post , o fornecedor já está arrumando para ser post na proxima versao.
 
+    if(this.agendamento.nome || this.agendamento.endereco || this.agendamento.email || this.agendamento.data ){
+        this._alertCtrl.create({
+          title: 'Preenchimento Obrigatório',
+          subTitle: 'Você deve preencher todas as informações',
+          buttons: [{text: 'Fechar'}]
+        }).present();
+        return;
+    }
+
 
     let api = `https://aluracar.herokuapp.com/salvarpedido?carro=${this.agendamento.carro.nome}&nome=${this.agendamento.nome}&preco=${this.agendamento.valor}&endereco=${this.agendamento.endereco}&email=${this.agendamento.email}&dataAgendamento=${this.agendamento.data}`;
      this._http.get(api)
