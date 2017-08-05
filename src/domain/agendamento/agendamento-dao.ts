@@ -19,4 +19,15 @@ export class AgendamentoDao{
        return  this._storage.set(key, agendamento);
     }
 
+      ehAgendamentoDuplicado(agendamento: Agendamento) {
+
+        let key = this._getKey(agendamento);
+
+        return this._storage
+            .get(key)
+            .then(dado => {
+                return dado ? true : false;
+            });
+    }
+
 }

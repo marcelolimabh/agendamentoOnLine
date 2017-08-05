@@ -22,13 +22,15 @@ export class AgendamentoService {
 
         let api = `${URL}salvarpedido?carro=${agendamento.carro.nome}&nome=${agendamento.nome}&preco=${agendamento.valor}&endereco=${agendamento.endereco}&email=${agendamento.email}&dataAgendamento=${agendamento.data}`;
 
-        return this._http.get(api)
-            .toPromise()
-            .then(() => agendamento.confirmado = true, err => console.log(err))
-            .then(() => {
-                this._dao.salva(agendamento);
-            })
-            .then(() => agendamento.confirmado);
+        return this._dao
+            .ehAgendamentoDuplicado(agendamento)
+            .then(duplicado => {
+                if(duplicado) throw new Error('Este agendamento já foi realizado. Verifique');
+                return this._http.get(api).toPromise()
+                      .then(() => agendamento.confirmado = true, err => console.log(err))
+                      .then(() => this._dao.salva(agendamento))
+                      .then(() => agendamento.confirmado);
+            });
 
     }
 
