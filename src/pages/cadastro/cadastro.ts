@@ -4,6 +4,8 @@ import { Http } from '@angular/http';
 import { HomePage } from '../home/home';
 import { Agendamento } from '../../domain/agendamento/agendamento';
 
+import { AgendamentoService } from '../../domain/agendamento/agendamento-service';
+
 // importou o tipo Carro para tiparmos a propriedade carro que guarda um objeto do tipo Carro
 import { Carro } from '../../domain/carro/carro';
 
@@ -15,10 +17,12 @@ export class CadastroPage {
 
   public agendamento: Agendamento;
   private _alerta: Alert;
+  
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               private _http: Http,
+              private _service: AgendamentoService,
               private _alertCtrl: AlertController) {
     this.agendamento = new Agendamento();            
     this.agendamento.carro = navParams.get('carro');
@@ -33,9 +37,7 @@ export class CadastroPage {
 
   agenda(){
 
-    //Metodo de gravacao da api do cliente é GET deveria ser post , o fornecedor já está arrumando para ser post na proxima versao.
-
-    if(this.agendamento.nome || this.agendamento.endereco || this.agendamento.email || this.agendamento.data ){
+    if(!this.agendamento.nome || !this.agendamento.endereco || !this.agendamento.email || !this.agendamento.data ){
         this._alertCtrl.create({
           title: 'Preenchimento Obrigatório',
           subTitle: 'Você deve preencher todas as informações',
@@ -45,9 +47,7 @@ export class CadastroPage {
     }
 
 
-    let api = `https://aluracar.herokuapp.com/salvarpedido?carro=${this.agendamento.carro.nome}&nome=${this.agendamento.nome}&preco=${this.agendamento.valor}&endereco=${this.agendamento.endereco}&email=${this.agendamento.email}&dataAgendamento=${this.agendamento.data}`;
-     this._http.get(api)
-            .toPromise()
+            this._service.agenda(this.agendamento)  
             .then(() => {
               this._alerta.setSubTitle('Agendamento realizado com sucesso!')
               this._alerta.present();
