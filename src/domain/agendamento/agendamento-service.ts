@@ -2,7 +2,7 @@ import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Agendamento } from '../agendamento/agendamento';
 
-import { Storage } from '@ionic/storage'
+import { AgendamentoDao } from '../../domain/agendamento/agendamento-dao';
 
 
 const URL: string = 'https://aluracar.herokuapp.com/';
@@ -12,7 +12,7 @@ export class AgendamentoService {
 
 
 
-    constructor(private _http: Http, private _storage: Storage) { }
+    constructor(private _http: Http, private _dao: AgendamentoDao) { }
 
 
     agenda(agendamento: Agendamento) {
@@ -26,8 +26,7 @@ export class AgendamentoService {
             .toPromise()
             .then(() => agendamento.confirmado = true, err => console.log(err))
             .then(() => {
-                let key = agendamento.email + agendamento.data.substr(0, 10);
-                return this._storage.set(key, agendamento);
+                this._dao.salva(agendamento);
             })
             .then(() => agendamento.confirmado);
 

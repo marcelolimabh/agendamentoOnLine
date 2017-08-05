@@ -11,6 +11,8 @@ import 'rxjs/add/operator/toPromise';
 
 import { Storage } from '@ionic/storage';
 
+import { AgendamentoDao } from '../domain/agendamento/agendamento-dao';
+
 function provideStorage() {
   return new Storage(['indexeddb'], { 
     name: 'agendaDB',
@@ -38,6 +40,7 @@ function provideStorage() {
   ],
   providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, 
               AgendamentoService, 
-              { provide: Storage, useFactory: provideStorage }]
+              { provide: Storage, useFactory: provideStorage },
+            AgendamentoDao]
 })
 export class AppModule {}
