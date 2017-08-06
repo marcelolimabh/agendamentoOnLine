@@ -7,7 +7,7 @@
 
   <ion-content padding>
     <ion-list inset>
-      <button menuClose ion-item *ngFor="let pagina of paginas">
+      <button menuClose ion-item *ngFor="let pagina of paginas" (click)="abrePagina(pagina)">
         {{pagina.titulo}}
       </button>
     </ion-list>
