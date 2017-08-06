@@ -13,6 +13,7 @@ import { Storage } from '@ionic/storage';
 
 import { AgendamentoDao } from '../domain/agendamento/agendamento-dao';
 import { AgendamentosPage } from '../pages/agendamentos/agendamentos';
+import { LoginPage } from '../pages/login/login';
 
 function provideStorage() {
   return new Storage(['indexeddb'], { 
@@ -28,7 +29,8 @@ function provideStorage() {
     HomePage,
     EscolhaPage,
     CadastroPage,
-    AgendamentosPage
+    AgendamentosPage,
+    LoginPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -39,7 +41,8 @@ function provideStorage() {
     HomePage,
     EscolhaPage,
     CadastroPage,
-    AgendamentosPage
+    AgendamentosPage,
+    LoginPage
   ],
   providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, 
               AgendamentoService, 
