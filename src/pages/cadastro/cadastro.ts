@@ -6,8 +6,7 @@ import { Agendamento } from '../../domain/agendamento/agendamento';
 
 import { AgendamentoService } from '../../domain/agendamento/agendamento-service';
 
-// importou o tipo Carro para tiparmos a propriedade carro que guarda um objeto do tipo Carro
-import { Carro } from '../../domain/carro/carro';
+
 
 @Component({
   selector: 'page-cadastro',
